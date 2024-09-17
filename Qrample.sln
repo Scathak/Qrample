@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35219.272
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qrample", "Qrample.csproj", "{CC2E0F09-A337-44BA-833C-880F5DABC3ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC2E0F09-A337-44BA-833C-880F5DABC3ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC2E0F09-A337-44BA-833C-880F5DABC3ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC2E0F09-A337-44BA-833C-880F5DABC3ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC2E0F09-A337-44BA-833C-880F5DABC3ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C96C21CF-F263-4E9A-ACEC-5C2C9B58741A}
+	EndGlobalSection
+EndGlobal
