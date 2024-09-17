@@ -59,6 +59,7 @@
             // 
             // toggleButton1
             // 
+            this.toggleButton1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.toggleButton1.Description = "Turn On Camera";
             this.toggleButton1.Image = ((System.Drawing.Image)(resources.GetObject("toggleButton1.Image")));
             this.toggleButton1.Label = "CamPane On";
@@ -68,6 +69,7 @@
             // 
             // toggleButton2
             // 
+            this.toggleButton2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.toggleButton2.Image = ((System.Drawing.Image)(resources.GetObject("toggleButton2.Image")));
             this.toggleButton2.Label = "CodePane On";
             this.toggleButton2.Name = "toggleButton2";
