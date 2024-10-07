@@ -9,6 +9,7 @@ namespace Qrample
 {
     public partial class UserControl1 : UserControl
     {
+        private int selectedItemNumber = -1;
         public bool checkBox1Checked { get { return checkBox1.Checked; } }
         public bool checkBox2Checked { get { return checkBox2.Checked; } }
         public bool checkBox3Checked { get { return checkBox3.Checked; } }
@@ -19,7 +20,6 @@ namespace Qrample
         public int comboBox1SelectedIndex { get { return comboBox1.SelectedIndex; } }
         public string textBox1Text { get { return textBox1.Text; } }
         public PictureBox pictureBox {get {return pictureBox1;} }
-        private int selectedItemNumber = -1;
 
         public AllCodesReader codesReader;
 
@@ -29,12 +29,6 @@ namespace Qrample
             codesReader = new AllCodesReader(this);
             codesReader.PopulateCameras(this.comboBox1);
         }
-        
-        private void checkBox5_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             var newString = textBox1.Text;
@@ -53,23 +47,11 @@ namespace Qrample
         {
             codesReader.InsertDecodedQR("test1");
         }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show($"IP camera responce: {codesReader.CheckIPCameraAsync(comboBox1Selected)}",
-                "Network test",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning);
-        }
-
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
             var selectedCamera = comboBox1Selected;
             if (!string.IsNullOrEmpty(selectedCamera))
             {
-                //if (selectedItemNumber == comboBox1.SelectedIndex) return;
-                //else 
                 selectedItemNumber = comboBox1.SelectedIndex;
                 codesReader.USBCameraAddress = comboBox1.SelectedIndex;
                 codesReader.StopCamera();

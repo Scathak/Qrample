@@ -1,23 +1,14 @@
 ﻿using AForge.Video.DirectShow;
-using AForge.Video;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Controls;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Net.Http;
-using System.Runtime.Remoting.Contexts;
 using OpenCvSharp;
-using System.Diagnostics;
 using OpenCvSharp.Extensions;
 using ZXing.Common;
 using ZXing;
-using System.IO;
-using System.Windows;
 
 
 namespace Qrample
@@ -34,7 +25,6 @@ namespace Qrample
         private const int _readBarcodeEveryNFrame = 5;
         private int _currentBarcodeReadFrameCount = 0;
         private System.Drawing.Bitmap _lastFrame;
-        //private readonly OpenCVQRCodeReader _qrCodeReader;
         public event EventHandler OnQRCodeRead;
         private BarcodeReader _reader;
         private bool IsItUSBCamera = true;
@@ -61,18 +51,16 @@ namespace Qrample
         }
         public void startSelectedCamera(string cameraName)
         {
-
             if (cameraName.Contains("http://"))
             {
                 IPCameraAddress = cameraName.Remove(0, 2).Trim();
                 IsItUSBCamera = false;
-                StartCamera();
             }
             else
             {
                 IsItUSBCamera = true;
-                StartCamera();
             }
+            StartCamera();
         }
 
         private async void StartCamera()
@@ -100,11 +88,8 @@ namespace Qrample
                         while (!_cancellationTokenSource.IsCancellationRequested)
                         {
                             videoCapture.Read(frame);
-
                             if (!frame.Empty())
                             {
-
-                                // Try read the barcode every n frames to reduce latency
                                 if (_currentBarcodeReadFrameCount % _readBarcodeEveryNFrame == 0)
                                 {
                                     try
@@ -122,14 +107,16 @@ namespace Qrample
                                     }
                                     catch (Exception ex)
                                     {
-                                        //Debug.WriteLine(ex);
+                                        System.Windows.Forms.MessageBox.Show("Error to decode. " + ex.Message,
+                                        "Decode error",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error);
                                     }
                                 }
                                 _currentBarcodeReadFrameCount += 1 % _readBarcodeEveryNFrame;
 
                                 // Releases the lock on first not empty frame
-                                if (initializationSemaphore != null)
-                                    initializationSemaphore.Release();
+                                initializationSemaphore?.Release();
                             }
 
                             // 30 FPS
@@ -140,14 +127,13 @@ namespace Qrample
                 }
                 catch (Exception ex)
                 {
-                    System.Windows.Forms.MessageBox.Show("Error connecting to IP camera. Check address. " + ex.Message,
+                    System.Windows.Forms.MessageBox.Show("Impossible to connect to the IP camera. Check address. " + ex.Message,
                         "Network error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Warning);
                 }
                 finally {
-                    if (initializationSemaphore != null)
-                        initializationSemaphore.Release();
+                    initializationSemaphore?.Release();
                 }
             }, _cancellationTokenSource.Token);
 
@@ -160,7 +146,6 @@ namespace Qrample
                 // To let the exceptions exit
                 await _previewTask;
             }
-
         }
         private void VideoPreviewPlay(Bitmap bitmap)
         {
@@ -191,18 +176,17 @@ namespace Qrample
                 Globals.ThisAddIn.myUserControl1.pictureBox.Image = bitmap;
             }
             catch (Exception ex) {
-                System.Windows.Forms.MessageBox.Show("Error to show preview. " + ex.Message,
+                System.Windows.Forms.MessageBox.Show("Impossible to show preview. " + ex.Message,
                     "Preview error",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                    MessageBoxIcon.Error);
             }
         }
         public async void StopCamera()
         {
             if(_cancellationTokenSource == null) return;
             // If "Dispose" gets called before Stop
-            if (_cancellationTokenSource.IsCancellationRequested)
-                return;
+            if (_cancellationTokenSource.IsCancellationRequested) return;
 
             if (!_previewTask.IsCompleted)
             {
@@ -230,7 +214,6 @@ namespace Qrample
                     else
                     {
                         SendKeys.SendWait("^{v}");
-
                         //TODO maybe outside Invoke()
                     }
                     previousResult = codeText;
@@ -266,7 +249,7 @@ namespace Qrample
                 System.Windows.Forms.MessageBox.Show("Error sending HTTP request to IP camera",
                     "Network error",
                     MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                    MessageBoxIcon.Error);
                 return false;
             }
         }
